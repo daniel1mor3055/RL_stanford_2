@@ -137,11 +137,7 @@ class Linear(DQN):
             - The learning rate will be set following a LinearSchedule
               (implemented in q4), so you don't need to set it here.
         """
-        ##############################################################
-        #################### YOUR CODE HERE - 1 line #############
-
-        ##############################################################
-        ######################## END YOUR CODE #######################
+        self.optimizer = torch.optim.Adam(self.q_network.parameters())
 
 
 if __name__ == "__main__":
