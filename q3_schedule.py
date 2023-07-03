@@ -31,11 +31,7 @@ class LinearSchedule(object):
 			  self.eps_end as t goes from 0 to self.nsteps
 			  For t > self.nsteps self.epsilon remains constant
         """
-        ##############################################################
-        ################ YOUR CODE HERE - 3-6 lines ##################
-
-        ##############################################################
-        ######################## END YOUR CODE ############## ########
+        return self.eps_begin + t * (self.eps_end - self.eps_begin)
 
 
 class LinearExploration(LinearSchedule):
@@ -75,11 +71,10 @@ class LinearExploration(LinearSchedule):
                 so you may use random.randrange, and get the number of possible
                 actions via env.num_actions()
         """
-        ##############################################################
-        ################ YOUR CODE HERE - 4-5 lines ##################
-
-        ##############################################################
-        ######################## END YOUR CODE #######################
+        if random.random() < self.epsilon:
+            return random.randrange(self.env.num_actions())
+        else:
+            return best_action
 
 
 def test1():
