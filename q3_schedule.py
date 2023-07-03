@@ -31,7 +31,10 @@ class LinearSchedule(object):
 			  self.eps_end as t goes from 0 to self.nsteps
 			  For t > self.nsteps self.epsilon remains constant
         """
-        return self.eps_begin + t * (self.eps_end - self.eps_begin)
+        if t <= self.nsteps:
+            self.epsilon = self.eps_begin + ((self.eps_end - self.eps_begin) / self.nsteps) * t
+        elif t > self.nsteps:
+            self.epsilon = self.eps_end
 
 
 class LinearExploration(LinearSchedule):
