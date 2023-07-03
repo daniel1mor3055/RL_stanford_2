@@ -58,11 +58,9 @@ class Linear(DQN):
         """
         out = None
 
-        ##############################################################
-        ################ YOUR CODE HERE - 3-5 lines ##################
-
-        ##############################################################
-        ######################## END YOUR CODE #######################
+        network_dic = {"q_network": self.q_network, "target_network": self.target_network}
+        input = torch.flatten(state, start_dim=1)
+        out = network_dic[network](input)
 
         return out
 
