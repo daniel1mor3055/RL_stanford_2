@@ -123,8 +123,8 @@ class Linear(DQN):
         not_done_mask = torch.bitwise_not(done_mask)
 
         q_samp = rewards + gamma * torch.max(target_q_values, dim=1).values * not_done_mask
-        action_q_values = torch.gather(q_values,1,actions.long().unsqueeze(-1)).squeeze(-1)
-        return torch.nn.functional.mse_loss(action_q_values,q_samp)
+        action_q_values = torch.gather(q_values, 1, actions.long().unsqueeze(-1)).squeeze(-1)
+        return torch.nn.functional.mse_loss(action_q_values, q_samp)
 
     def add_optimizer(self):
         """
