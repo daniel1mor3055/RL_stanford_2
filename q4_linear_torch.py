@@ -79,11 +79,7 @@ class Linear(DQN):
             1. look up saving and loading pytorch models
         """
 
-        ##############################################################
-        ################### YOUR CODE HERE - 1-2 lines ###############
-
-        ##############################################################
-        ######################## END YOUR CODE #######################
+        self.target_network.load_state_dict(self.q_network.state_dict())
 
     def calc_loss(
         self,
