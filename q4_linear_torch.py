@@ -33,11 +33,10 @@ class Linear(DQN):
         img_height, img_width, n_channels = state_shape
         num_actions = self.env.num_actions()
 
-        ##############################################################
-        ################ YOUR CODE HERE (3-4 lines) ##################
+        input_size = img_height * img_width * n_channels * self.config.state_history
 
-        ##############################################################
-        ######################## END YOUR CODE #######################
+        self.q_network = nn.Linear(input_size, num_actions)
+        self.target_network = nn.Linear(input_size, num_actions)
 
     def get_q_values(self, state: torch.Tensor, network: str = "q_network"):
         """
