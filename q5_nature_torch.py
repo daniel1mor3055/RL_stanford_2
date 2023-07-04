@@ -28,7 +28,12 @@ class NatureQN(Linear):
         2. Set self.target_network to be the same configuration self.q_network but initialized from scratch
         3. What is the input size of the model?
 
-
+        Use the following architecture:
+        • One convolution layer with 16 output channels, a kernel size of 3, stride 1, and no padding.
+        • A ReLU activation.
+        • A dense layer with 128 hidden units.
+        • Another ReLU activation.
+        • The final output layer.
 
         Hints:
             1. Simply setting self.target_network = self.q_network is incorrect.
@@ -44,13 +49,33 @@ class NatureQN(Linear):
         """
         state_shape = self.env.state_shape()
         img_height, img_width, n_channels = state_shape
+        input_channels = n_channels * self.config.state_history
         num_actions = self.env.num_actions()
 
-        ##############################################################
-        ################ YOUR CODE HERE - 20-30 lines ################
+        # calculate the output shape after the Conv2d layer
+        output_height = img_height - 3 + 1
+        output_width = img_width - 3 + 1
+        conv_output_size = output_height * output_width * 16
 
-        ##############################################################
-        ######################## END YOUR CODE #######################
+        # Define the model architecture
+        self.q_network = nn.Sequential(
+            nn.Conv2d(input_channels, 16, kernel_size=3, stride=1, padding=0),
+            nn.ReLU(),
+            nn.Flatten(),
+            nn.Linear(conv_output_size, 128),
+            nn.ReLU(),
+            nn.Linear(128, num_actions)
+        )
+
+        # Initialize Q Network and Target Network
+        self.target_network = nn.Sequential(
+            nn.Conv2d(input_channels, 16, kernel_size=3, stride=1, padding=0),
+            nn.ReLU(),
+            nn.Flatten(),
+            nn.Linear(conv_output_size, 128),
+            nn.ReLU(),
+            nn.Linear(128, num_actions)
+        )
 
     def get_q_values(self, state, network):
         """
@@ -70,12 +95,8 @@ class NatureQN(Linear):
             2. You can forward a tensor through a network by simply calling it (i.e. network(tensor))
         """
         out = None
-
-        ##############################################################
-        ################ YOUR CODE HERE - 4-5 lines lines ################
-
-        ##############################################################
-        ######################## END YOUR CODE #######################
+        network_dic = {"q_network": self.q_network, "target_network": self.target_network}
+        out = network_dic[network](state.permute(0, 3, 1, 2))
         return out
 
 
